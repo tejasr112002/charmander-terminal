@@ -44,12 +44,24 @@ jobs:
           done
           echo "preview never came up"; exit 1
 
+      - name: Post "testing now" comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: qa-agent
+          message: |
+            ## QA agent: 🔄 testing this PR
+
+            Preview: ${{ env.PREVIEW_URL }}
+
+            Watch it live: https://qa-agent-live.vercel.app (the agent's browser streams there while it runs).
+            Results and recordings will replace this comment when it finishes, usually within 10 minutes.
+
       - name: Build QA request
         run: |
           git diff --name-only "$BASE_SHA" "$HEAD_SHA" > files.txt
           git diff "$BASE_SHA" "$HEAD_SHA" -- . ':(exclude)pnpm-lock.yaml' ':(exclude)data/seed.json' | head -c 60000 > diff.txt
-          jq -n --arg repo "$REPO" --argjson pr "$PR_NUMBER" --arg title "$PR_TITLE" --arg url "$PREVIEW_URL" --rawfile diff diff.txt --rawfile files files.txt \
-            '{repo: $repo, prNumber: $pr, title: $title, previewUrl: $url, diff: $diff, changedFiles: ($files | split("\n") | map(select(length > 0)))}' > request.json
+          jq -n --arg repo "$REPO" --argjson pr "$PR_NUMBER" --arg title "$PR_TITLE" --arg url "$PREVIEW_URL" --arg pub "$QA_AGENT_URL" --rawfile diff diff.txt --rawfile files files.txt \
+            '{repo: $repo, prNumber: $pr, title: $title, previewUrl: $url, publicUrl: $pub, diff: $diff, changedFiles: ($files | split("\n") | map(select(length > 0)))}' > request.json
           jq -c 'del(.diff)' request.json
 
       - name: Run QA agent
