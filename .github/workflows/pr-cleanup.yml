@@ -1,0 +1,14 @@
+name: Remove preview app
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl apps destroy "charmander-terminal-pr-${{ github.event.pull_request.number }}" --yes || true
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

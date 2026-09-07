@@ -1,0 +1,89 @@
+name: QA agent on PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: qa-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  preview-and-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      APP: charmander-terminal-pr-${{ github.event.pull_request.number }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy preview app
+        run: |
+          flyctl apps create "$APP" --org personal || true
+          flyctl deploy --app "$APP" --config fly.toml --ha=false --remote-only --yes \
+            --vm-size shared-cpu-1x --vm-memory 1024
+          echo "PREVIEW_URL=https://$APP.fly.dev" >> "$GITHUB_ENV"
+
+      - name: Wait for preview
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf "$PREVIEW_URL/api/markets" >/dev/null; then echo up; exit 0; fi
+            sleep 5
+          done
+          echo "preview never came up"; exit 1
+
+      - name: Build QA request
+        run: |
+          BASE=${{ github.event.pull_request.base.sha }}
+          HEAD=${{ github.event.pull_request.head.sha }}
+          git diff --name-only "$BASE" "$HEAD" > files.txt
+          git diff "$BASE" "$HEAD" -- . ':(exclude)pnpm-lock.yaml' ':(exclude)data/seed.json' | head -c 60000 > diff.txt
+          jq -n \
+            --arg repo "${{ github.repository }}" \
+            --argjson pr ${{ github.event.pull_request.number }} \
+            --arg title "${{ github.event.pull_request.title }}" \
+            --arg url "$PREVIEW_URL" \
+            --rawfile diff diff.txt \
+            --arg files "$(cat files.txt)" \
+            '{repo:$repo, prNumber:$pr, title:$title, previewUrl:$url, diff:$diff, changedFiles:($files|split("\n")|map(select(length>0)))}' \
+            > request.json
+
+      - name: Run QA agent
+        id: qa
+        run: |
+          set +e
+          for i in $(seq 1 20); do
+            code=$(curl -s -o result.json -w '%{http_code}' --max-time 2400 \
+              -H "authorization: Bearer ${{ secrets.QA_HTTP_TOKEN }}" \
+              -H 'content-type: application/json' \
+              --data @request.json \
+              "${{ secrets.QA_AGENT_URL }}/pr-check")
+            if [ "$code" = "409" ]; then echo "agent busy, waiting…"; sleep 60; continue; fi
+            break
+          done
+          echo "http=$code"
+          cat result.json | head -c 2000; echo
+          if [ "$code" != "200" ]; then echo "QA agent call failed ($code)"; exit 1; fi
+          jq -r .markdown result.json > comment.md
+          echo "passed=$(jq -r .passed result.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Comment on PR
+        if: always() && hashFiles('comment.md') != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: qa-agent
+          path: comment.md
+
+      - name: Fail if QA failed
+        if: steps.qa.outputs.passed != 'true'
+        run: exit 1
