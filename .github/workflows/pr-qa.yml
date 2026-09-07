@@ -7,6 +7,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
+  deployments: write
 
 jobs:
   preview-and-qa:
@@ -43,6 +44,17 @@ jobs:
             sleep 5
           done
           echo "preview never came up"; exit 1
+
+      - name: Register preview as a GitHub deployment (shows "View deployment" on the PR, opens in a new tab)
+        uses: chrnorm/deployment-action@v2
+        id: deployment
+        with:
+          token: ${{ github.token }}
+          environment: preview-pr-${{ github.event.pull_request.number }}
+          environment-url: ${{ env.PREVIEW_URL }}
+          initial-status: success
+          ref: ${{ github.event.pull_request.head.sha }}
+          auto-inactive: true
 
       - name: Post "testing now" comment
         uses: marocchino/sticky-pull-request-comment@v2
