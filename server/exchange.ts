@@ -340,12 +340,12 @@ export class Exchange extends EventEmitter {
       log(`CANCEL ${o.id} -> (fault cancelIgnored) reported ok, order still open`);
       return { ok: true, value: { ...o, status: "cancelled", updatedAt: Date.now() } };
     }
-    o.status = "cancelled";
-    o.updatedAt = Date.now();
+    // Return an immutable cancelled copy instead of mutating the stored order in place.
+    const cancelled: Order = { ...o, status: "cancelled", updatedAt: Date.now() };
     log(`CANCEL ${o.id} ${o.side} ${o.size} ${o.symbol} @ ${o.price ?? "mkt"} -> CANCELLED`);
-    this.emit("order", o);
+    this.emit("order", cancelled);
     this.emit("change");
-    return { ok: true, value: o };
+    return { ok: true, value: cancelled };
   }
 
   cancelAll(faults: Faults, symbol?: string): Order[] {
