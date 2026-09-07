@@ -1,0 +1,104 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: #0f1a1f;
+  border-top: 1px solid #1b2a2f;
+  color: #f2f5f4;
+  font-size: 12px;
+  min-height: 240px;
+}
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 8px;
+  border-bottom: 1px solid #1b2a2f;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.tab {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: #949e9c;
+  padding: 10px 10px 8px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.tab:hover { color: #f2f5f4; }
+.tabActive { color: #f2f5f4; border-bottom-color: #1fa67d; }
+.tabsRight {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 8px;
+  color: #949e9c;
+}
+.checkbox { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.checkbox input { accent-color: #1fa67d; }
+.conn {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #2a1e1e;
+  color: #ef5350;
+}
+.connReconnecting { background: #2a2718; color: #e2b93b; }
+
+.scroll { overflow: auto; flex: 1; }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.table th {
+  position: sticky;
+  top: 0;
+  background: #0f1a1f;
+  color: #949e9c;
+  font-weight: 500;
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid #1b2a2f;
+  white-space: nowrap;
+}
+.table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #14222a;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.table td.text { font-family: inherit; }
+.table tr:hover td { background: #14222a; }
+.green { color: #1fa67d; }
+.red { color: #ef5350; }
+.muted { color: #949e9c; }
+.link {
+  background: none;
+  border: 0;
+  color: #1fa67d;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+.link:hover { text-decoration: underline; }
+.link:disabled { color: #949e9c; cursor: not-allowed; text-decoration: none; }
+.headLink { color: #1fa67d; font-weight: 500; }
+.empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #949e9c;
+  padding: 40px 16px;
+}
+.coin { display: inline-flex; align-items: center; gap: 6px; }
+.badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #1b2a2f;
+  color: #949e9c;
+}

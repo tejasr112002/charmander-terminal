@@ -1,0 +1,68 @@
+.page {
+  min-height: 100vh;
+  background: #0b1418;
+  color: #f2f5f4;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 12px;
+  flex-wrap: wrap;
+}
+.title { margin: 0; font-size: 22px; font-weight: 600; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn {
+  background: #14222a;
+  border: 1px solid #1f2f35;
+  color: #f2f5f4;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.btn:hover { border-color: #1fa67d; }
+.btnPrimary { background: #1fa67d; color: #04110c; border-color: #1fa67d; font-weight: 600; }
+.grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: 12px;
+  padding: 0 20px 12px;
+}
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.card {
+  background: #0f1a1f;
+  border: 1px solid #1b2a2f;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.cardTitle { color: #949e9c; font-size: 12px; margin-bottom: 6px; }
+.big { font-size: 18px; font-weight: 600; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+.rows { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.row { display: flex; justify-content: space-between; align-items: baseline; }
+.row span:first-child { color: #949e9c; }
+.green { color: #1fa67d; }
+.red { color: #ef5350; }
+.chartHead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.chartTabs { display: flex; gap: 4px; }
+.chartTab {
+  background: transparent;
+  border: 0;
+  color: #949e9c;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.chartTabActive { background: #1b2a2f; color: #f2f5f4; }
+.chart { width: 100%; height: 220px; display: block; }
+.panels { flex: 1; padding: 0 20px 20px; }
+.panels > section { border: 1px solid #1b2a2f; border-radius: 10px; overflow: hidden; }

@@ -1,0 +1,173 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 8, 10, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.dialog {
+  width: min(440px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  background: #0f1a1f;
+  border: 1px solid #1f2f35;
+  border-radius: 10px;
+  color: #f2f5f4;
+  font-size: 13px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 8px;
+}
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.close {
+  background: transparent;
+  border: 0;
+  color: #949e9c;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: inline-flex;
+}
+.close:hover { color: #f2f5f4; background: #1b2a2f; }
+.body { padding: 8px 18px 18px; display: flex; flex-direction: column; gap: 12px; }
+.muted { color: #949e9c; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric: tabular-nums; }
+
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  width: 100%;
+  background: #14222a;
+  border: 1px solid #1f2f35;
+  border-radius: 8px;
+  padding: 14px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+.option:hover { border-color: #1fa67d; }
+.optionTitle { font-weight: 600; font-size: 14px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.label { display: flex; justify-content: space-between; color: #949e9c; font-size: 12px; }
+.link { background: none; border: 0; color: #1fa67d; cursor: pointer; font: inherit; padding: 0; }
+.link:hover { text-decoration: underline; }
+.inputWrap {
+  display: flex;
+  align-items: center;
+  background: #0b1418;
+  border: 1px solid #1f2f35;
+  border-radius: 8px;
+  padding: 0 12px;
+}
+.inputWrap:focus-within { border-color: #1fa67d; }
+.input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #f2f5f4;
+  font: inherit;
+  padding: 11px 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.static {
+  background: #0b1418;
+  border: 1px solid #1f2f35;
+  border-radius: 8px;
+  padding: 11px 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.rows { display: flex; flex-direction: column; gap: 6px; }
+.row { display: flex; justify-content: space-between; }
+.primary {
+  width: 100%;
+  background: #1fa67d;
+  color: #04110c;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.primary:disabled { background: #1b2a2f; color: #949e9c; cursor: not-allowed; }
+.secondary {
+  width: 100%;
+  background: #14222a;
+  color: #f2f5f4;
+  border: 1px solid #1f2f35;
+  border-radius: 8px;
+  padding: 11px;
+  font: inherit;
+  cursor: pointer;
+}
+.error { color: #ef5350; font-size: 12px; }
+.qrWrap { display: flex; justify-content: center; padding: 6px 0; }
+.qr { background: #fff; border-radius: 8px; padding: 8px; }
+.address {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: #0b1418;
+  border: 1px solid #1f2f35;
+  border-radius: 8px;
+  padding: 10px 12px;
+  word-break: break-all;
+  font-size: 12px;
+}
+.swap {
+  align-self: center;
+  background: #14222a;
+  border: 1px solid #1f2f35;
+  color: #949e9c;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1100;
+}
+.toast {
+  min-width: 260px;
+  max-width: 360px;
+  background: #14222a;
+  border: 1px solid #1f2f35;
+  border-left: 3px solid #1fa67d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #f2f5f4;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.toastError { border-left-color: #ef5350; }
+.toastInfo { border-left-color: #949e9c; }
+.toastTitle { font-weight: 600; }
+.toastDetail { color: #949e9c; font-size: 12px; margin-top: 2px; }

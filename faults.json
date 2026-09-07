@@ -1,0 +1,22 @@
+{
+  "positionDelayMs": 0,
+  "openOrderDelayMs": 0,
+  "freezeBookAfterSec": 0,
+  "freezeTickerAfterSec": 0,
+  "dropWsAfterSec": 0,
+  "displayedFeeRate": null,
+  "staleOpenOrderMs": 0,
+  "skipSizeRounding": false,
+  "skipMinNotional": false,
+  "orderValueMultiplier": 1,
+  "entryPriceErrorPct": 0,
+  "liqPriceErrorPct": 0,
+  "balanceIgnoresFees": false,
+  "cancelIgnored": false,
+  "postOnlyFills": false,
+  "hideMarket": null,
+  "equityDriftUsd": 0,
+  "apiLatencyMs": 0,
+  "flipChangeSign": false,
+  "submitDisabledMs": 0
+}
